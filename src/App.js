@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  ConnectButton,
+  SetViewerName,
+  ShowViewerName,
+} from "../src/components/connection";
+import { Provider, useViewerConnection } from "@self.id/framework";
+import Editor from "./components/editor";
 
 function App() {
+  const config = useViewerConnection();
+  console.log("conenction---sas", config);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider client={{ ceramic: "testnet-clay" }}>
+      <Editor />
+      <ConnectButton config={config} />
+      {config[0]?.selfID && <SetViewerName connection={config[0]} />}
+      {config[0]?.selfID && <ShowViewerName />}
+    </Provider>
   );
 }
 
